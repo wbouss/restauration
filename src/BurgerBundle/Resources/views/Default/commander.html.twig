@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Le récapitulatif</title>
+
+        {% stylesheets '@BurgerBundle/Resources/public/css/bootstrap-theme.min.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        {% stylesheets '@BurgerBundle/Resources/public/css/bootstrap.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+
+        {% stylesheets '@BurgerBundle/Resources/public/css/carte.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        {% stylesheets '@BurgerBundle/Resources/public/css/jquery.dataTables.css'  filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        {% javascripts 
+        '@BurgerBundle/Resources/public/js/jquery.js'
+        '@BurgerBundle/Resources/public/js/bootstrap.js'
+        '../vendor/datatables/datatables/media/js/jquery.dataTables.js' 
+
+        %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+
+    </head>
+    <body>
+        <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header visible-xs">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><h2>Bibi Burger</h2></a>
+                </div><!-- navbar-header -->
+                <div id="navbar" class="navbar-collapse collapse">
+                    <div class="hidden-xs" id="logo"><a href="main.html.twig">
+                           
+                        </a></div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{path("burger_homepage")}}" class="menuscroll">Accueil</a></li>
+
+                        <li><a href="{{path("burger_carte")}}">Commander</a></li>
+                        <li><a href="#"></a></li>
+                        <li><a href="{{path("burger_panier")}}">Panier</a></li>
+                            {% if is_granted("ROLE_USER") %}
+                            <li><a href="{{path("burger_moncompte")}}">Mon compte</a></li>
+                            {% else %}
+                            <li><a href="{{path("burger_moncompte")}}">Inscription / Connexion</a></li>
+                            {% endif %}
+
+                        <!--fix for scroll spy active menu element-->
+                        <li style="display:none;"><a href="#header"></a></li>
+
+                    </ul>
+                </div><!--/.navbar-collapse -->
+            </div><!-- container -->
+        </div><!-- menu -->
+        <div class="container inner">
+            <div id="panier_Content">
+                <div id="panier_Content_etape">
+                    <div class="btn-group btn-group-justified" role="group"  width="300" aria-label="...">
+                        <button type="button" id="panier_Content_etape" class="btn btn-default" style="cursor: default;"> <span class="badge">1</span> Panier</button>
+                        <button type="button" id="panier_Content_etape" class="btn btn-default" style="cursor: default;"> <span class="badge">2</span> Livraison</button>
+                        <button type="button" id="panier_Content_etape" class="btn btn-primary" style="cursor: default;"> <span class="badge">3</span> Récapitulatif</button>
+                        <button type="button" id="panier_Content_etape" class="btn btn-default" style="cursor: default;"> <span class="badge">4</span> Paiement</button>
+                        <button type="button" id="panier_Content_etape" class="btn btn-default" style="cursor: default;"> <span class="badge">5</span> Confirmation</button>
+                    </div></div>
+            </div>
+            {% if message is defined %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    {{ message }}
+                </div>
+            {% endif %}
+            <table id="tabRecap" class="display" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Article</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Prix Total</th>
+                    </tr>
+                </thead>
+            </table>
+            <table id="tabTotaux" class="display" width="100%" cellspacing="0">
+                <tr>
+                    <td> <h4 class="media-heading">Choix de livraison</h4></td>
+                    <td>{{ typeLivraison }} (Gratuit)</td>
+                </tr>
+                <tr>
+                    <td> <h4 class="media-heading">Total de vos articles TTC</h4></td>
+                    <td>{{ total }} €</td>
+                </tr>
+            </table>
+            {% if is_granted("ROLE_USER") %}
+
+
+                {#                   <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                    <input type='hidden' value="{{ total }}" name="amount" />
+                                    <input name="currency_code" type="hidden" value="EUR" />
+                                    <input name="shipping" type="hidden" value="0.00" />
+                                    <input name="tax" type="hidden" value="0.00" />
+                                    <input name="return" type="hidden" value="http://bibi-burger.fr/dfjgmdfjmgjd/burger/web/app_dev.php/pok" />
+                                    <input name="cancel_return" type="hidden" value="http://bibi-burger.fr/dfjgmdfjmgjd/burger/web/app_dev.php/pnok" />
+                                    <input name="notify_url" type="hidden" value="http://bibi-burger.fr/dfjgmdfjmgjd/burger/web/app_dev.php/paiement" />
+                                    <input name="cmd" type="hidden" value="_xclick" />
+                                    <input name="business" type="hidden" value="wbousssony1@gmail.com" />
+                                    <input name="item_name" type="hidden" value="Commande bibi-burger" />
+                                    <input name="no_note" type="hidden" value="1" />
+                                    <input name="lc" type="hidden" value="FR" />
+                                    <input name="bn" type="hidden" value="PP-BuyNowBF" />
+                                    <input name="custom" type="hidden" value="{{app.user.id}}" />
+                                    <input alt="Effectuez vos paiements via PayPal : une solution rapide, gratuite et sécurisée" name="submit" src="https://www.paypal.com/fr_FR/FR/i/btn/btn_buynow_LG.gif" type="image" /><img src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" border="0" alt="" width="1" height="1" />
+                                </form>#}
+                
+                <form style="display: inline-block;" action="{{path("burger_paiement", {"livraison":  typeLivraison  })}}" method="POST">
+                    <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="pk_live_VCqQb4bsF3GranQfVCXXGhl8"
+                        data-amount="{{ total * 100 }}"
+                        data-name="Paiement de la commande"
+                        data-description="Widget"
+                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                        data-locale="auto"
+                        data-label="Paiement par carte bancaire"
+                        data-zip-code="true"
+                        data-currency="eur">
+                    </script>
+                </form>
+                <button style="display: inline-block;" onClick="confirmPayment()" type="button" class="btn btn-success">Paiement sur place</button>
+
+                {#                <button onClick="location.href = '{{ path('paiement' , {'id': app.user.id } ) }}'" type="button" class="btn btn-primary">Paiement</button>
+                #}            {% else %}
+                <button onClick="location.href = '{{ path('burger_moncompte') }}'" type="button" class="btn btn-primary">Se connecter pour commander</button>
+            {% endif %}
+            <button style="display: inline-block;" onClick="location.href = '{{ path('burger_carte', { "type": "burger" }) }}'" type="button" class="btn btn-warning">Annuler</button>
+
+            <script>
+                var pathPayment = '{{ path('burger_paiementplace', {"livraison":  typeLivraison  })  }}';
+            </script>
+            {% javascripts
+                '@BurgerBundle/Resources/public/js/recap.js'
+            %}
+            <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        </div>
+    </div>
+</body>
+</html>

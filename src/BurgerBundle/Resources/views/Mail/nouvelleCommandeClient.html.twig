@@ -1,0 +1,23 @@
+
+Bonjour,<br><br>
+
+Nous vous remercions de votre commande et de votre confiance. Le récapitulatif ci-dessous de votre commande. <br><br>
+
+Date: {{ commande.date|date("d/m/Y") }}<br>
+Type de livraison: {{ commande.livraison }}<br>
+Nom du client: {{ commande.nom }}<br>
+Adresse du client: {{ commande.adresse }}<br>
+Téléphone du client: {{ commande.telephone }}<br>
+
+Voici la liste des produits commandés: <br><br>
+
+{% for ligne in lignes %}
+    Produit:  {{ ligne.produit }} , Quantité : {{ ligne.quantite }}, Prix payé par unité: {{  ligne.prix }} €<br> 
+{% endfor %}
+
+<br><br>
+Vous recevrez votre commande dans un délais de 30 à 45min.
+<br>
+Bonne appétit !
+<br><br>
+L'équipe Bibi-Burger.fr

@@ -1,0 +1,414 @@
+{# empty Twig template #}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js"> <!--<![endif]-->
+    <head>
+        <title>Bibi Burger</title>
+		
+
+        <!-- meta -->
+		<meta name="description" content=""/>
+		<meta name="robots" content="index, follow, archive"/>
+		<meta property="st:section" content=""/>
+		<meta property="og:url" content="http://www.bibi-burger.fr/"/>
+		<meta property="og:description" content="bibi-burger, bibi burger, bibi, rennes, burgers, burger, livraison burger, rennes burgers, restaurant rennes"/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:title" content="Accueil"/>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		
+        <!-- css -->
+        {% stylesheets '@BurgerBundle/Resources/public/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        
+        {% stylesheets '../vendor/fortawesome/font-awesome/css/font-awesome.min.css'  filter='cssrewrite' output='css/fontawesome.css' %}
+        <link rel='stylesheet' href='{{ asset_url }}' /> 
+        {% endstylesheets %}
+
+
+        <!-- google font -->
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Kreon:300,400,700'>
+
+        <!-- js -->
+        {% javascripts 
+        '@BurgerBundle/Resources/public/js/modernizr-2.6.2-respond-1.1.0.min.js'%}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    </head>
+    <body data-spy="scroll" data-target="#navbar" data-offset="120" >
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-101242678-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+        <div id="menu" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header visible-xs">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><h2>BiBi Burger</h2></a>
+                </div><!-- navbar-header -->
+                <div id="navbar" class="navbar-collapse collapse">
+                    <div class="hidden-xs" id="logo"><a href="main.html.twig">
+                            <!--<img src="{{ asset("bundles/burger/images/default/logo.png")}}" alt="">-->
+                        </a></div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" class="menuscroll">Accueil</a></li>
+
+                        <li><a href="{{ path('burger_carte') }}">Commander</a></li>
+						<li><a href="#"></a></li>
+                        <li><a href="{{path("burger_panier")}}">Panier</a></li>
+                            {% if is_granted("ROLE_USER") %}
+                            <li><a href="{{path("burger_moncompte")}}">Mon compte</a></li>
+                            {% else %}
+                            <li><a href="{{path("burger_moncompte")}}">Inscription / Connexion</a></li>
+                            {% endif %}
+
+                        <!--fix for scroll spy active menu element-->
+                        <li style="display:none;"><a href="#header"></a></li>
+
+                    </ul>
+                </div><!--/.navbar-collapse -->
+            </div><!-- container -->
+        </div><!-- menu -->
+
+        <div id="header">
+             <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="{{ asset('bundles/burger/images/default/slid1-min.png')}}" class="images-carrousel caroussel-img-main">
+                        </div>
+
+                        <div class="item">
+                            <img src="{{ asset('bundles/burger/images/default/slid2-min.png')}}" class="images-carrousel caroussel-img-main">
+                        </div>
+
+                        <div class="item">
+                            <img src="{{ asset('bundles/burger/images/default/slid3-min.png')}}" class="images-carrousel caroussel-img-main">
+                        </div>
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon icon-prev"></span>
+                        <span class="sr-only">Précédent</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon icon-next"></span>
+                        <span class="sr-only">Suivant</span>
+                    </a>
+                </div>
+        </div>
+        <!-- /#header -->
+
+		
+		<div id="story" class="light-wrapper">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <h2 class="section-title text-center">Bienvenue !</h2>
+            <p class="lead main text-center">Pour le plaisir de tous, deux restaurants se trouve à votre disposition à Rennes</p>
+            <div class="row text-center story">
+                <div class="col-sm-4">
+                    <div class="col-wrapper">
+                        <div class="icon-wrapper"> <i class="fa fa-anchor"></i> </div>
+                        <h3>Nos boutiques</h3>
+                        <p>Nous sommes présent à rue de Fougères et à Saint Jacques.</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="col-wrapper">
+                        <div class="icon-wrapper"> <i class="fa  fa-cutlery"></i> </div>
+                        <h3>Nos spécialités</h3>
+                        <p>Nous sommes spécialiste du Burger mais aussi des sandwichs de toutes sortes pour les plus gourmands. Découvrez vite notre carte ! </p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="col-wrapper">
+                        <div class="icon-wrapper"> <i class="fa fa-coffee"></i> </div>
+                        <h3>Qualité</h3>
+                        <p>Bibi Burger vous offre une qualité optimal et des produits frais pleins de saveurs.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- /.services --> 
+        </div>
+        <!-- /.container -->
+        <section class="ss-style-bottom"></section>
+    </div><!-- #story -->
+	
+	<div id="facts" class="parallax parallax2 facts">
+        <div class="container inner">
+            <div class="row text-center services-3">
+                <div class="col-sm-4">
+                    <div class="col-wrapper">
+                    <div class="icon-border bm10"> <i class="fa fa-truck"></i> </div>
+                    <h4>Livraison rapide</h4>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-wrapper">
+                    <div class="icon-border bm10"> <i class="fa fa-star"></i> </div>
+                    <h4>Gout unique</h4>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-wrapper">
+                    <div class="icon-border bm10"> <i class="fa fa-snowflake-o"></i> </div>
+                    <h4>Produit frais</h4>
+                </div>
+            </div>
+        
+            </div>
+        </div>
+        <!-- /.container --> 
+    </div><!-- #facts -->
+
+
+        <div id="food-menu" class="light-wrapper">
+            <section class="ss-style-top"></section>
+            <div class="container inner">
+                <h2 class="section-title text-center">Notre carte</h2>
+				
+                <p class="text-center">Cliquez ici pour commander votre repas<br><br>
+                    <button class="btn btn-danger" onClick="location.href = '{{ path('burger_carte') }}'">Accèder à la carte</button>
+				</p>
+				<br/>
+
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <a href="{{ path('burger_carte', { "type": "Burger" }) }}"><div class="menu-images "><img src="{{ asset("bundles/burger/images/default/menu/baps.jpg")}}"  alt="Hot Drinks"/></div>
+                        <div class="menu-titles"><h1 class="">Les Burgers</h1></div></a>
+                        <div class="menu-items ">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <a href="{{ path('burger_carte', { "type": "Woop" }) }}"> <div class="menu-images "><img src="{{ asset("bundles/burger/images/default/menu/whoops.jpg")}}"  alt="Ice Drinks"/></div>
+                        <div class="menu-titles"><h1 class="" >Les Woop's</h1></div></a>
+                        <div class="menu-items ">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <a href="{{ path('burger_carte', { "type": "Sandwich" }) }}"><div class="menu-images "><img src="{{ asset("bundles/burger/images/default/menu/sandwich.jpg")}}"  alt="Smoothies"/></div>
+                        <div class="menu-titles"><h1 class="">Les sandwichs</h1></div></a>
+                        <div class="menu-items ">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <a href="{{ path('burger_carte', { "type": "Tex mex" }) }}"><div class="menu-images "><img src="{{asset("bundles/burger/images/default/menu/texmex.jpg")}}"  alt="Desserts"/></div>
+                        <div class="menu-titles"><h1 class="">Les Tex Mex</h1></div></a>
+                        <div class="menu-items ">
+                           
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <a href="{{ path('burger_carte', { "type": "Dessert" }) }}"><div class="menu-images "><img src="{{ asset("bundles/burger/images/default/menu/tira.jpg")}}"  alt="Hot Drinks"/></div>
+                            <div class="menu-titles"><h1 class="">Les Desserts</h1></div></a>
+                        <div class="menu-items ">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <a href="{{ path('burger_carte', { "type": "Boisson" }) }}"><div class="menu-images "><img src="{{ asset("bundles/burger/images/default/menu/boissons.png")}}"  alt="Ice Drinks"/></div>
+                        <div class="menu-titles"><h1 class="">Les boissons</h1></div></a>
+                        <div class="menu-items ">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.container -->
+            <section class="ss-style-bottom"></section>
+        </div><!--/#food-menu-->
+		
+
+		
+	<div id="chefs" class="parallax pricing">
+        <div class="container inner">
+
+            <h2 class="section-title text-center">Nos restaurants</h2>
+            <p class="lead main text-center">Deux restaurant à Rennes à votre service !</p>
+            
+            <div class="row text-center chefs">
+                <div class="col-sm-6">
+                    <div class="col-wrapper">
+                        <div class="icon-wrapper">
+                            <img src="bundles/burger/images/default/chefs/fougere.png">
+                        </div>
+                        <h3>Bibi Burger Rue de Fougères</h3>
+                        <p>142 rue de Fougères, Rennes.</p>
+						<p><a href="0223242535"><h2>Tél : 02 23 24 25 35</h2></a></p>
+                    </div>
+                </div>
+             
+                <div class="col-sm-6">
+                    <div class="col-wrapper">
+                        <div class="icon-wrapper">
+                            <img src="bundles/burger/images/default/chefs/nantes.png">
+                        </div>
+                        <h3>Bibi Burger Saint Jacques</h3>
+                        <p>254 rue de Nantes, Rennes.</p>
+						
+						<p><a href="tel:0299300303"><h2>Tél : 02 99 30 03 03</h2></a></p>
+                    </div>
+                </div>
+				
+				<div class="row">
+					<div class="col-md-2 col-md-offset-5"  style="margin-top: 60px"><h3>Devenez franchisé !</h3></div>
+					<br>
+					<div class="col-md-2 col-md-offset-5" style="margin-top: 8px"><a href="tel:0616562782" class="btn btn-success">Cliquez ici</a></div>
+				</div>
+				
+            </div>
+
+        </div>
+        <!-- /.container --> 
+    </div><!-- /#chefs -->
+	
+	<div id="reservation" class="light-wrapper">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <h2 class="section-title text-center">Nous contacter</h2>
+            <p class="lead main text-center">Pour toute demande &amp; informations</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="form form-table" method="post" name="">
+                        <div class="form-group">
+                            <h4>Remplissez tous les champs pour nous contacter</h4>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6 form-group">
+                            <label class="sr-only" for="first_name1">Prénom</label>
+                            <input class="form-control hint" type="text" id="prenom" name="prenom" placeholder="Prénom" required="">
+                          </div>
+                          <div class="col-lg-6 col-md-6 form-group">
+                            <label class="sr-only" for="last_name1">Nom</label>
+                            <input class="form-control hint" type="text" id="nom" name="nom" placeholder="Nom" required="">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6 form-group">
+                            <label class="sr-only" for="email1">Email</label>
+                            <input class="form-control hint" type="email" id="email" name="email" placeholder="Email@domaine.com" required="">
+                          </div>
+                          <div class="col-lg-6 col-md-6 form-group">
+                            <label class="sr-only" for="phone1">Téléphone</label>
+                            <input class="form-control hint" type="text" id="tel" name="tel" placeholder="Téléphone" required="">
+                          </div>
+                        </div>
+                      
+                        <div class="row">
+                          
+                          <div class="col-lg-6 col-md-6 form-group">
+                            <label class="sr-only" for="time1">Message</label>
+                            <input class="form-control timepicker ui-timepicker-input hint" type="text" id="message" name="message" placeholder="Mon message" required="" autocomplete="off">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12 col-md-12">
+                            <p>Renseignez vos informations et votre demande. Nous vous recontacterons très vite</p>
+                          </div>
+                        </div>
+						<br/>
+                        <div class="row">
+                          <div class="col-lg-12 col-md-12">
+                            <button type="submit" class="btn btn-danger btn-lg">Envoyer !</button>
+                          </div>
+                        </div>
+                      </form>
+                </div><!-- col-md-6 -->
+				<br/>
+                <div class="col-md-5 col-md-offset-1">
+                    
+                    <h3><i class="fa fa-clock-o fa-fw"></i>Heures</h3>
+                    
+                    <h4>Semaine</h4>
+                    <p>Lundi au Samedi: 11:00 H - 23:00 H</p>
+                    <h4>Weekend</h4>
+                    <p>Dimanche: 14:00 H -  23:00 H</p>
+
+                    <h3><i class="fa fa-map-marker fa-fw"></i>Nos adresses</h3>
+                    <p>142 rue du Fougères, 35700 Rennes</p>
+					<p>242 Rue de Nantes, 35200 Saint-Jacques-de-la-Lande</p>
+
+                    <h3><i class="fa fa-mobile fa-fw"></i>Contacts &amp; Livraisons</h3>
+                    <p>Email: <a href="mailto:yourname@meatking.com">contact@bibi-burger.fr</a></p>
+                    <p>Téléphone: 06 21 21 21 21</p>
+					<p>Nous livrons 7j/7j de 11H00 à 23H00</p>
+					<p>Dimanche à partir de 14H00</p>
+					<p>Nos délais de livraisons sont de 30min à 45min</p>
+
+                </div><!-- col-md-6 -->
+            </div>
+            <!-- /.services --> 
+        </div>
+        <!-- /.container -->
+        <section class="ss-style-bottom"></section>
+    </div><!-- #reservation -->
+	
+
+
+
+        <footer id="footer" class="dark-wrapper">
+            <div class="container inner">
+                <div class="row">
+				<div class="col-sm-6">
+                    &copy; Copyright <a class="themeBy" href="http://bibi-burger.fr">Bibi-Burger</a> 2017
+                </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="social-bar">
+                            <a href="#" class="fa fa-twitter-square tooltipped"  onClick="location.href ='https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.bibiburger.fr%2F&text=Accueil&original_referer='"  title=""></a>
+                            <a href="#" class="fa fa-linkedin-square tooltipped"  onClick="location.href ='https://www.linkedin.com/start/join?trk=login_reg_redirect&session_redirect=https%3A%2F%2Fwww.linkedin.com%2Fsharing%2Fshare-offsite%3Fmini%3Dtrue%26url%3Dhttps%253A%252F%252Fwww.bibiburger.fr%252F%26title%3DAccueil'"  title=""></a>
+                            <a href="#" class="fa fa-facebook-square tooltipped"  onClick="location.href ='https://www.facebook.com/bibiburger35/'"  title=""></a>
+                            <a href="#" class="fa fa-google-plus-square tooltipped"  onClick="location.href ='https://plus.google.com/share?url=https%3A%2F%2Fwww.bibiburger.fr%2F'"  title=""></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </footer>
+
+        {% javascripts 
+        '@BurgerBundle/Resources/public/js/jquery.js'
+        '@BurgerBundle/Resources/public/js/jquery.actual.min.js'
+        '@BurgerBundle/Resources/public/js/jquery.scrollTo.min.js' 
+        '@BurgerBundle/Resources/public/js/bootstrap.js' 
+        '@BurgerBundle/Resources/public/js/main.js'%}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+    </body>
+</html>

@@ -1,0 +1,63 @@
+services:
+#    burger.example:
+#        class: BurgerBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    burger.admin.produit:
+        class: BurgerBundle\Admin\ProduitAdmin
+        arguments: [~, BurgerBundle\Entity\Produit, BurgerBundle:ProduitAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Produit }
+
+    burger.admin.image:
+        class: BurgerBundle\Admin\ImageAdmin
+        arguments: [~, BurgerBundle\Entity\Image, BurgerBundle:ImageAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Image, show_in_dashboard: false }
+
+    burger.admin.ligne_commande:
+        class: BurgerBundle\Admin\LigneCommandeAdmin
+        arguments: [~, BurgerBundle\Entity\LigneCommande, BurgerBundle:LigneCommandeAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: LigneCommande,  show_in_dashboard: false  }
+
+    burger.admin.commande:
+        class: BurgerBundle\Admin\CommandeAdmin
+        arguments: [~, BurgerBundle\Entity\Commande, BurgerBundle:CommandeAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Commande }
+
+    burger.admin.user:
+        class: BurgerBundle\Admin\UserAdmin
+        arguments: [~, BurgerBundle\Entity\User, BurgerBundle:UserAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: User }
+
+    burger.admin.sauce:
+        class: BurgerBundle\Admin\SauceAdmin
+        arguments: [~, BurgerBundle\Entity\Sauce, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Sauce }
+
+    burger.admin.crudite:
+        class: BurgerBundle\Admin\CruditeAdmin
+        arguments: [~, BurgerBundle\Entity\Crudite, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Crudite }
+
+    burger.admin.type_frite:
+        class: BurgerBundle\Admin\TypeFriteAdmin
+        arguments: [~, BurgerBundle\Entity\TypeFrite, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: TypeFrite }
+
+    burger.admin.supplement:
+        class: BurgerBundle\Admin\SupplementAdmin
+        arguments: [~, BurgerBundle\Entity\Supplement, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Supplement }
+
+    burger.admin.parametre:
+        class: BurgerBundle\Admin\ParametreAdmin
+        arguments: [~, BurgerBundle\Entity\Parametre, BurgerBundle:ParametreAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Parametre }

@@ -3,7 +3,7 @@
 namespace BurgerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * TypeProduit
  *
@@ -24,10 +24,22 @@ class TypeProduit
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="string", length=255, unique=true)
+     * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
 
+    /**
+     * @ORM\OneToOne(targetEntity="BurgerBundle\Entity\Image", cascade={"persist"})
+     * @Assert\Valid()
+     * */
+    private $image;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="composition", type="string", length=255)
+     */
+    private $composition;
 
     /**
      * Get id
@@ -62,5 +74,41 @@ class TypeProduit
     {
         return $this->nom;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getComposition()
+    {
+        return $this->composition;
+    }
+
+    /**
+     * @param string $composition
+     */
+    public function setComposition($composition)
+    {
+        $this->composition = $composition;
+    }
+
+
+
 }
 

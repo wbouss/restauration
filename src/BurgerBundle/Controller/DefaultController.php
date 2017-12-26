@@ -89,21 +89,43 @@ class DefaultController extends Controller {
      *
      * @Route("/carte/{type}", name="burger_carte")
      */
-    public function carteAction(Request $request, $type = "Burger") {
+    public function carteAction(Request $request, $type = 0 ) {
+
         $em = $this->getDoctrine()->getManager();
         $repositoryProduit = $em->getRepository("BurgerBundle:Produit");
         $repositorySauce = $em->getRepository("BurgerBundle:Sauce");
         $repositoryCrudite = $em->getRepository("BurgerBundle:Crudite");
         $repositoryTypeFrite = $em->getRepository("BurgerBundle:TypeFrite");
         $repositorySupplement = $em->getRepository("BurgerBundle:Supplement");
-        $produits = $repositoryProduit->findByType($type);
+        $repositoryTypeProduit = $em->getRepository("BurgerBundle:TypeProduit");
+
+        if( $type == 0 ){
+                if(!empty($repositoryTypeProduit->findAll()))
+                {
+                    $typeObject = $repositoryTypeProduit->findAll()[0];
+                    $produits = $repositoryProduit->findByType($typeObject->getId());
+                }
+                else
+                {
+                    $typeObject =  0;
+                    $produits = array();
+                }
+        }
+        else{
+            $typeObject = $repositoryTypeProduit->find($type);
+            $produits = $repositoryProduit->findByType($type);
+        }
+        if(!empty($typeObject))
+            $typeObject = unserialize($typeObject->getComposition());
+
         $boissons = $repositoryProduit->findByType("Boisson");
         $sauces = $repositorySauce->findAll();
         $crudites = $repositoryCrudite->findAll();
         $frites = $repositoryTypeFrite->findAll();
         $supplements = $repositorySupplement->findAll();
 
-        return $this->render('BurgerBundle:Default:carte.html.twig', array("typeProduit" => $type, "produits" => $produits, "sauces" => $sauces, "crudites" => $crudites, "boissons" => $boissons, "frites" => $frites, "supplements" => $supplements));
+
+        return $this->render('BurgerBundle:Default:carte.html.twig', array( "typeProduitObjectComposition" => $typeObject , "typeProduits" => $repositoryTypeProduit->findAll() ,"typeProduit" => $type, "produits" => $produits, "sauces" => $sauces, "crudites" => $crudites, "boissons" => $boissons, "frites" => $frites, "supplements" => $supplements));
     }
 
     /**

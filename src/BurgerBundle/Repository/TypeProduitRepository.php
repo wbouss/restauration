@@ -10,4 +10,16 @@ namespace BurgerBundle\Repository;
  */
 class TypeProduitRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getTypeProduitIdName(){
+        $retour = array();
+        $all = $this->findAll();
+        foreach ( $all as $e){
+            $retour[$e->getNom()] = $e->getId();
+        }
+
+        return $retour;
+    }
+
+
 }

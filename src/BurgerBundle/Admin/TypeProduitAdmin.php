@@ -2,6 +2,7 @@
 
 namespace BurgerBundle\Admin;
 
+use BurgerBundle\Controller\TypeProduitAdminController;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,6 +19,8 @@ class TypeProduitAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('nom')
+            ->add('composition')
+
         ;
     }
 
@@ -29,6 +32,7 @@ class TypeProduitAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('nom')
+            ->add('composition')
             ->add('_action', null, array(
                 'actions' => array(
                     'show' => array(),
@@ -44,9 +48,16 @@ class TypeProduitAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+
+        $choices[TypeProduitAdminController::$frite] = TypeProduitAdminController::$frite;
+        $choices[TypeProduitAdminController::$supplement] = TypeProduitAdminController::$supplement;
+        $choices[TypeProduitAdminController::$sauce] = TypeProduitAdminController::$sauce;
         $formMapper
-            ->add('id')
             ->add('nom')
+            ->add('composition', "choice" , array( "multiple" => true , "choices" => array( $choices)))
+            ->add('image', "sonata_type_admin", array(
+                'label' => false,
+                'required' => false))
         ;
     }
 
@@ -58,6 +69,9 @@ class TypeProduitAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('nom')
+            ->add('composition')
+            ->add('Image', null, array('template' => 'BurgerBundle:Admin:Produit/show_image.html.twig'))
+
         ;
     }
 }

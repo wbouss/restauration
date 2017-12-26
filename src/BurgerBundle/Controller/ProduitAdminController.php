@@ -21,6 +21,8 @@ class ProduitAdminController extends CRUDController {
         $form->setData($object);
 
         if ($form->handleRequest($this->getRequest())->isValid()) {
+            $repositorytypeProduit = $this->container->get('doctrine')->getManager()->getRepository("BurgerBundle:TypeProduit");
+            $object->setType($repositorytypeProduit->find( $object->getType()));
             // persist if the form was valid and if in preview mode the preview was approved
             if (!$this->isInPreviewMode() || $this->isPreviewApproved()) {
                 $image = $object->getImage();

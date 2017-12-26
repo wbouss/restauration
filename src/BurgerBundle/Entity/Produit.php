@@ -39,7 +39,9 @@ class Produit {
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=3000)
+     * @ORM\ManyToOne(targetEntity="BurgerBundle\Entity\TypeProduit")
+     * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $type;
 

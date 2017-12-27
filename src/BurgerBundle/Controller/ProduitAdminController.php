@@ -22,9 +22,16 @@ class ProduitAdminController extends CRUDController {
 
         if ($form->handleRequest($this->getRequest())->isValid()) {
             $repositorytypeProduit = $this->container->get('doctrine')->getManager()->getRepository("BurgerBundle:TypeProduit");
-            $object->setType($repositorytypeProduit->find( $object->getType()));
+            $typeProduct = $repositorytypeProduit->find( $object->getType());
+            $object->setType($typeProduct);
             // persist if the form was valid and if in preview mode the preview was approved
             if (!$this->isInPreviewMode() || $this->isPreviewApproved()) {
+                // on verifie si le prix seul est bien rempli si c'est un type de produit avec composition de menu
+                if(!empty($typeProduct->getComposition()) && empty($object->getSeul()))
+                {
+                    goto step;
+                }
+
                 $image = $object->getImage();
                 $image->upload();
                 $this->admin->create($object);
@@ -37,7 +44,7 @@ class ProduitAdminController extends CRUDController {
                 return new RedirectResponse($this->admin->generateUrl('list'));
             }
         }
-
+        step:
         $view = $form->createView();
 
         // set the theme for the current Admin Form

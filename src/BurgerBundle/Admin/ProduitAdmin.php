@@ -68,7 +68,7 @@ class ProduitAdmin extends AbstractAdmin {
                     ->add('intitule')
                     ->add('description')
                     ->add('prix',"money")
-                    ->add('seul',"money",array( "label" =>"Prix seul: (à remplir pour les menus Burger, woop et sandwich)" , 'required' => false))
+                    ->add('seul',"money",array( "label" =>"Prix seul: (à remplir si le type de produit comprend une composition de menu)" , 'required' => false))
                     ->add('type', "choice", array("choices" => $typeProduits  ))
                     ->add('image', "sonata_type_admin", array(
                         'label' => false,
@@ -81,7 +81,7 @@ class ProduitAdmin extends AbstractAdmin {
                     ->add('intitule')
                     ->add('description')
                     ->add('prix',"money")
-                    ->add('seul',"money",array( "label" =>"Prix seul: (à remplir pour les menus Burger, woop et sandwich)" , 'required' => false))
+                    ->add('seul',"money",array( "label" =>"Prix seul: (à remplir si le type de produit comprend une composition de menu)" , 'required' => false))
                     ->add('type', "choice", array("choices" => $typeProduits  ))
                     ->add('image', "sonata_type_admin", array(
                         'label' => false,
@@ -98,7 +98,7 @@ class ProduitAdmin extends AbstractAdmin {
                 ->add('intitule')
                 ->add('description')
                 ->add('prix')
-                ->add('type')
+                ->add('type', null, array('associated_property' => 'nom'))
                 ->add('seul')
                 ->add('Image', null, array('template' => 'BurgerBundle:Admin:Produit/show_image.html.twig'))
         ;

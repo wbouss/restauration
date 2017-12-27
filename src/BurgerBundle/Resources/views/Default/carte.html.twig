@@ -197,103 +197,11 @@
                                                 </div>
                                             {%  endif %}
 
-                                        {#  {% if produit.type == "Burger" or produit.type == "Woop" or produit.type == "Sandwich"  %}
-
-                                          <div>
-                                              <div>
-                                              Type de frite
-                                              </div>
-                                              <div>
-                                              <select id="ChoixFrite" class="btn btn-primary dropdown-toggle" style="color: black; background-color: transparent !important">
-                                                  {% for frite in frites %}
-                                                      <option    value="{{ frite.id }}">{{ frite.nom }}</option>
-                                                  {% endfor %}
-                                              </select>
-                                              </div>
-                                          </div>
-                                          <div>
-                                              <div>
-                                              Sauce  N°1
-                                              </div>
-                                              <div>
-                                              <select  id="ChoixSauce1" class="btn btn-primary dropdown-toggle" style="color: black; background-color: transparent !important">
-                                                  {% for sauce in sauces %}
-                                                      <option   value="{{ sauce.id }}">{{ sauce.nom }}</option>
-                                                  {% endfor %}
-                                              </select>
-                                              </div>
-                                          </div>
-                                          <div>
-                                              <div>
-                                              Sauce  N°2
-                                              </div>
-                                              <div>
-                                              <select id="ChoixSauce2" class="btn btn-primary dropdown-toggle" style="color: black; background-color: transparent !important">
-                                                  {% for sauce in sauces %}
-                                                      <option    value="{{ sauce.id }}">{{ sauce.nom }}</option>
-                                                  {% endfor %}
-                                              </select>
-
-                                              </div>
-                                          </div>
-                                          <div>
-                                              <div>
-                                              Choix de la boisson
-                                              </div>
-                                              <div>
-                                              <select id="ChoixBoisson" class="btn btn-primary dropdown-toggle" style="color: black; background-color: transparent !important">
-                                                  {% for boisson in boissons %}
-                                                      <option  value="{{ boisson.id }}">{{ boisson.intitule }}</option>
-                                                  {% endfor %}
-                                              </select>
-                                              </div>
-                                          </div>
-                                              <div id="SupplementBox">
-                                                  <div class="titre"> Supplément(0.5€) :</div>
-                                                  <div>
-                                                  {% for supplement in supplements %}
-                                                      <label><input type="checkbox" id="choixSupplement" value="{{ supplement.id }}"> {{ supplement.nom }}</label>
-                                                      {% endfor %}
-                                                  </div>
-                                              </div>
-                                          {% endif %}
-                                          {% if produit.type == "Burger" or produit.type == "Woop" %}
-                                              <div id="BurgerWoopInfoSup">
-                                                  <label>Informations supplémentaires : <input type="text" width="100%" id="BurgerWoopInfoSupInput"></label>
-                                              </div>
-                                          {% endif %}
-                                          {% if produit.type == "Sandwich" %}
-                                              <div id="CruditesBox">
-                                                  Crudités :
-                                                  {% for crudite in crudites %}
-                                                      <label><input type="checkbox" id="choixCrudite" value="{{ crudite.id }}"> {{ crudite.nom }}</label>
-                                                      {% endfor %}
-                                              </div>
-                                          {% endif %}
-
-                                          {% if produit.type == "Tex mex" %}
-                                              Sauce
-                                              <select  id="ChoixSauce1" class="btn btn-primary dropdown-toggle" style="color: black; background-color: transparent !important">
-                                                  {% for sauce in sauces %}
-                                                      <option   value="{{ sauce.id }}">{{ sauce.nom }}</option>
-                                                  {% endfor %}
-                                              </select>
-                                              <div id="SupplementBox">
-                                                  Supplément(0.5€) :<br>
-                                                  {% for supplement in supplements %}
-                                                      <input type="checkbox" id="choixSupplement" value="{{ supplement.id }}"> {{ supplement.nom }}
-                                                  {% endfor %}
-                                              </div>
-                                          {% endif %}
-                                          {% if produit.type == "Burger" or produit.type == "Woop" or produit.type == "Sandwich" %}
-                                              Le {{ produit.type }} seul se vend au tarif de {{ produit.seul }} €
-                                          {% endif %}#}
-
                                         </div>
 
                                         <a class="btn btn-primary buttonAjoutPanier" data-id="{{produit.id}}">Acheter</a>
-                                        {% if produit.type == "Burger" or produit.type == "Woop" or produit.type == "Sandwich" %} 
-                                            <a class="btn btn-warning buttonAjoutPanierSeul" data-id="{{produit.id}}">Acheter seulement le {{ produit.type }} </a>
+                                        {% if typeProduitObjectComposition is not  null  %}
+                                            <a class="btn btn-warning buttonAjoutPanierSeul" data-id="{{produit.id}}">Acheter seulement le {{ produit.type.nom }} </a>
                                         {% endif %}
                                         <div class="clearfix"></div>
                                     </div>
@@ -308,8 +216,19 @@
             </div>
         </div>
         <script>
+            var COMPOSITION_FRITE = "FRITE";
+            var COMPOSITION_SAUCE = "SAUCE";
+            var COMPOSITION_SAUCE = "SAUCE2";
+            var COMPOSITION_BOISSON = "BOISSON";
+            var COMPOSITION_CRUDITE = "CRUDITE";
+            var COMPOSITION_SUPPLEMENT = "SUPPLEMENT";
+            var typeProduitObjectComposition = "{{ typeProduitObjectComposition|json_encode() }}";
+            var composition_array = JSON.parse(typeProduitObjectComposition.replace(/&quot;/g,'"'));
+
 
             $(".buttonAjoutPanierSeul").click(function () {
+
+
                 var typeProduit = "{{ typeProduit }}";
                 var idProduit = $(this).attr("data-id");
                 var frite = -1;
@@ -318,42 +237,22 @@
                 var boisson = -1;
                 var selectedCrudites = -1;
                 var selectedSupplement = -1;
-                if (typeProduit == "Burger" || typeProduit == "Woop")
-                {
+
+
+                if( in_array( COMPOSITION_SUPPLEMENT ,composition_array) ) {
                     var selectedSupplementCp = [];
                     $('#SupplementBox input:checked').each(function () {
                         selectedSupplementCp.push($(this).attr('value'));
                     });
                     if (selectedSupplementCp.length > 0)
                         selectedSupplement = selectedSupplementCp;
+                }
+
+                if( in_array( COMPOSITION_CRUDITE ,composition_array) ) {
                     if ($("#BurgerWoopInfoSupInput").val().length != 0)
                         selectedCrudites = $("#BurgerWoopInfoSupInput").val();
-                } else if (typeProduit == "Sandwich") {
-                    var selectedSupplementCp = [];
-                    var selectedCruditesCp = [];
-                    $('#SupplementBox input:checked').each(function () {
-                        selectedSupplementCp.push($(this).attr('value'));
-                    });
-
-                    $('#CruditesBox input:checked').each(function () {
-                        selectedCruditesCp.push($(this).attr('value'));
-                    });
-                    if (selectedSupplementCp.length > 0)
-                        selectedSupplement = selectedSupplementCp;
-                    if (selectedCruditesCp.length > 0)
-                        selectedCrudites = selectedCruditesCp;
-                } else if (typeProduit == "Tex mex")
-                {
-                     var selectedSupplementCp = [];
-                    $('#SupplementBox input:checked').each(function () {
-                        selectedSupplementCp.push($(this).attr('value'));
-                    });
-                    if (selectedSupplementCp.length > 0)
-                        selectedSupplement = selectedSupplementCp;
-                } else if (typeProduit == "Dessert" || typeProduit == "Boisson")
-                {
-
                 }
+
                 $.post(Routing.generate("burger_ajoutpanier", {"idProduit": idProduit, "typeProduit": typeProduit, "frite": frite, "sauce1": sauce1, "sauce2": sauce2, "boisson": boisson, "supplement": selectedSupplement, "crudite": selectedCrudites
                 }), function (ret) {
                     document.location.href = Routing.generate("burger_panier");
@@ -369,51 +268,35 @@
                 var boisson = -1;
                 var selectedCrudites = -1;
                 var selectedSupplement = -1;
-              if (typeProduit == "Burger" || typeProduit == "Woop")
-                {
+
+
+                if( in_array( COMPOSITION_FRITE ,composition_array) ) {
                     var frite = $(this).parent().find("#ChoixFrite").val();
+                }
+
+                if( in_array( COMPOSITION_SAUCE ,composition_array) ) {
                     var sauce1 = $(this).parent().find("#ChoixSauce1").val();
+                }
+
+                if( in_array( COMPOSITION_SAUCE2 ,composition_array) ) {
                     var sauce2 = $(this).parent().find("#ChoixSauce2").val();
+                }
+
+                if( in_array( COMPOSITION_BOISSON ,composition_array) ) {
                     var boisson = $(this).parent().find("#ChoixBoisson").val();
+                }
+                if( in_array( COMPOSITION_SUPPLEMENT ,composition_array) ) {
                     var selectedSupplementCp = [];
                     $('#SupplementBox input:checked').each(function () {
                         selectedSupplementCp.push($(this).attr('value'));
                     });
                     if (selectedSupplementCp.length > 0)
                         selectedSupplement = selectedSupplementCp;
+                }
+
+                if( in_array( COMPOSITION_CRUDITE ,composition_array) ) {
                     if ($("#BurgerWoopInfoSupInput").val().length != 0)
                         selectedCrudites = $("#BurgerWoopInfoSupInput").val();
-                } else if (typeProduit == "Sandwich") {
-                    var frite = $(this).parent().find("#ChoixFrite").val();
-                    var sauce1 = $(this).parent().find("#ChoixSauce1").val();
-                    var sauce2 = $(this).parent().find("#ChoixSauce2").val();
-                    var boisson = $(this).parent().find("#ChoixBoisson").val();
-                    var selectedSupplementCp = [];
-                    var selectedCruditesCp = [];
-                    $('#SupplementBox input:checked').each(function () {
-                        selectedSupplementCp.push($(this).attr('value'));
-                    });
-
-                    $('#CruditesBox input:checked').each(function () {
-                        selectedCruditesCp.push($(this).attr('value'));
-                    });
-                    if (selectedSupplementCp.length > 0)
-                        selectedSupplement = selectedSupplementCp;
-                    if (selectedCruditesCp.length > 0)
-                        selectedCrudites = selectedCruditesCp;
-
-                } else if (typeProduit == "Tex mex")
-                {
-                    var sauce1 = $(this).parent().find("#ChoixSauce1").val();
-                    var selectedSupplementCp = [];
-                    $('#SupplementBox input:checked').each(function () {
-                        selectedSupplementCp.push($(this).attr('value'));
-                    });
-                    if (selectedSupplementCp.length > 0)
-                        selectedSupplement = selectedSupplementCp;
-                } else if (typeProduit == "Dessert" || typeProduit == "Boisson")
-                {
-
                 }
 
                 $.post(Routing.generate("burger_ajoutpanier", {"idProduit": idProduit, "typeProduit": typeProduit, "frite": frite, "sauce1": sauce1, "sauce2": sauce2, "boisson": boisson, "supplement": selectedSupplement, "crudite": selectedCrudites

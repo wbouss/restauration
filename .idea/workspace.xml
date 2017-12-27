@@ -5,12 +5,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Admin/ProduitAdmin.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Admin/ProduitAdmin.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Admin/TypeProduitAdmin.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Admin/TypeProduitAdmin.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Controller/DefaultController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Controller/ProduitAdminController.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Controller/ProduitAdminController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Controller/TypeProduitAdminController.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Controller/TypeProduitAdminController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Entity/Produit.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Entity/Produit.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Entity/TypeProduit.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Entity/TypeProduit.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Repository/TypeProduitRepository.php" afterPath="$PROJECT_DIR$/src/BurgerBundle/Repository/TypeProduitRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BurgerBundle/Resources/views/Default/carte.html.twig" afterPath="$PROJECT_DIR$/src/BurgerBundle/Resources/views/Default/carte.html.twig" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,11 +34,31 @@
       <file leaf-file-name="TypeProduitAdmin.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Admin/TypeProduitAdmin.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+            <state relative-caret-position="793">
+              <caret line="53" column="24" lean-forward="false" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
               <folding>
                 <element signature="e#38#93#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProduitAdmin.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Admin/ProduitAdmin.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="215">
+              <caret line="61" column="41" lean-forward="false" selection-start-line="61" selection-start-column="41" selection-end-line="61" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProduitAdminController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/ProduitAdminController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="748">
+              <caret line="49" column="28" lean-forward="false" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -60,8 +76,8 @@
       <file leaf-file-name="TypeProduitAdminController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/TypeProduitAdminController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="43" column="40" lean-forward="false" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
+            <state relative-caret-position="306">
+              <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -70,8 +86,8 @@
       <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/DefaultController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+            <state relative-caret-position="340">
+              <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -80,14 +96,9 @@
       <file leaf-file-name="carte.html.twig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Resources/views/Default/carte.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2680">
-              <caret line="282" column="76" lean-forward="false" selection-start-line="282" selection-start-column="76" selection-end-line="282" selection-end-column="76" />
-              <folding>
-                <element signature="n#style#0;n#select#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#select#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#select#0;n#div#1;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#select#0;n#div#1;n#div#4;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="323">
+              <caret line="203" column="158" lean-forward="false" selection-start-line="203" selection-start-column="158" selection-end-line="203" selection-end-column="158" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -96,18 +107,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>paiement</find>
-      <find>total</find>
-      <find>burger_paiement</find>
-      <find>pa</find>
-      <find>paypa</find>
-      <find>username</find>
-      <find>jms_payment_paypal</find>
-      <find>JmsBundle</find>
-      <find>jms</find>
       <find>payment</find>
       <find>menu-items</find>
-      <find>panier</find>
       <find>transl</find>
       <find>locale</find>
       <find>3)</find>
@@ -124,7 +125,18 @@
       <find>images/</find>
       <find>images/p</find>
       <find>findb</find>
+      <find>panier</find>
+      <find>panierd</find>
+      <find>paniera</find>
+      <find>ach</find>
+      <find>buttonAjoutPanier</find>
+      <find>burger_ajoutpanier</find>
       <find>carte</find>
+      <find>frite</find>
+      <find>Prix seul: (à remplir pour les menus Burger, woop et sandwich)</find>
+      <find>Prix seul:</find>
+      <find>Prix seul:</find>
+      <find>Prix seul:</find>
     </findStrings>
     <dirStrings>
       <dir>C:\wamp64\www\burgerv3\src</dir>
@@ -156,12 +168,12 @@
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/src/BurgerBundle/Entity/Produit.php" />
         <option value="$PROJECT_DIR$/src/BurgerBundle/Repository/TypeProduitRepository.php" />
-        <option value="$PROJECT_DIR$/src/BurgerBundle/Controller/ProduitAdminController.php" />
-        <option value="$PROJECT_DIR$/src/BurgerBundle/Admin/ProduitAdmin.php" />
         <option value="$PROJECT_DIR$/src/BurgerBundle/Entity/TypeProduit.php" />
-        <option value="$PROJECT_DIR$/src/BurgerBundle/Admin/TypeProduitAdmin.php" />
-        <option value="$PROJECT_DIR$/src/BurgerBundle/Controller/TypeProduitAdminController.php" />
         <option value="$PROJECT_DIR$/src/BurgerBundle/Controller/DefaultController.php" />
+        <option value="$PROJECT_DIR$/src/BurgerBundle/Admin/TypeProduitAdmin.php" />
+        <option value="$PROJECT_DIR$/src/BurgerBundle/Admin/ProduitAdmin.php" />
+        <option value="$PROJECT_DIR$/src/BurgerBundle/Controller/ProduitAdminController.php" />
+        <option value="$PROJECT_DIR$/src/BurgerBundle/Controller/TypeProduitAdminController.php" />
         <option value="$PROJECT_DIR$/src/BurgerBundle/Resources/views/Default/carte.html.twig" />
       </list>
     </option>
@@ -194,7 +206,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -517,7 +529,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -627,12 +639,13 @@
       <workItem from="1514124754767" duration="10156000" />
       <workItem from="1514202709690" duration="13688000" />
       <workItem from="1514288051774" duration="3425000" />
-      <workItem from="1514318447036" duration="1602000" />
+      <workItem from="1514318447036" duration="4154000" />
+      <workItem from="1514379396464" duration="6515000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50739000" />
+    <option name="totallyTimeSpent" value="59806000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -644,13 +657,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1924" height="1056" extended-state="1" />
+    <frame x="-8" y="-8" width="1924" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17924528" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -662,7 +676,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -933,14 +946,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/ProduitAdminController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-822">
-          <caret line="23" column="46" lean-forward="false" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Entity/Produit.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -949,13 +954,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/DefaultController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Admin/TypeProduitAdmin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="793">
+          <caret line="53" column="24" lean-forward="false" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
+          <folding>
+            <element signature="e#38#93#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Admin/ProduitAdmin.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="43" column="71" lean-forward="false" selection-start-line="43" selection-start-column="68" selection-end-line="43" selection-end-column="71" />
-          <folding>
-            <element signature="e#38#68#0#PHP" expanded="false" />
-          </folding>
+        <state relative-caret-position="215">
+          <caret line="61" column="41" lean-forward="false" selection-start-line="61" selection-start-column="41" selection-end-line="61" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/ProduitAdminController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="49" column="28" lean-forward="false" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -969,40 +998,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/TypeProduitAdminController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="43" column="40" lean-forward="false" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Admin/TypeProduitAdmin.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#38#93#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Controller/DefaultController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        <state relative-caret-position="306">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BurgerBundle/Resources/views/Default/carte.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2680">
-          <caret line="282" column="76" lean-forward="false" selection-start-line="282" selection-start-column="76" selection-end-line="282" selection-end-column="76" />
-          <folding>
-            <element signature="n#style#0;n#select#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#select#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#select#0;n#div#1;n#div#3;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#select#0;n#div#1;n#div#4;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="323">
+          <caret line="203" column="158" lean-forward="false" selection-start-line="203" selection-start-column="158" selection-end-line="203" selection-end-column="158" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -158,7 +158,10 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div>
+                                            {%  endif %}
+
+                                            {% if "SAUCE2" in typeProduitObjectComposition  %}
+                                            <div>
                                                     <div>
                                                         Sauce  N°2
                                                     </div>
@@ -172,7 +175,17 @@
                                                     </div>
                                                 </div>
                                             {%  endif %}
-                                            {% if "BOISSON" in typeProduitObjectComposition  %}
+
+{#                                            {% if "CRUDITE" in typeProduitObjectComposition  %}
+                                                <div id="CruditesBox">
+                                                    Crudités :
+                                                    {% for crudite in crudites %}
+                                                        <label><input type="checkbox" id="choixCrudite" value="{{ crudite.id }}"> {{ crudite.nom }}</label>
+                                                        {% endfor %}
+                                                </div>
+                                             {%  endif %}#}
+
+                                                {% if "BOISSON" in typeProduitObjectComposition  %}
                                                 <div>
                                                     <div>
                                                         Choix de la boisson
@@ -199,8 +212,12 @@
 
                                         </div>
 
+                                        {% if typeProduitObjectComposition is not  empty  %}
+                                            <p style="color;black">Le {{  produit.type.nom  }} seul se vend au tarif de {{ produit.seul }} euros</p>
+                                        {% endif %}
+
                                         <a class="btn btn-primary buttonAjoutPanier" data-id="{{produit.id}}">Acheter</a>
-                                        {% if typeProduitObjectComposition is not  null  %}
+                                        {% if typeProduitObjectComposition is not  empty  %}
                                             <a class="btn btn-warning buttonAjoutPanierSeul" data-id="{{produit.id}}">Acheter seulement le {{ produit.type.nom }} </a>
                                         {% endif %}
                                         <div class="clearfix"></div>
@@ -218,7 +235,7 @@
         <script>
             var COMPOSITION_FRITE = "FRITE";
             var COMPOSITION_SAUCE = "SAUCE";
-            var COMPOSITION_SAUCE = "SAUCE2";
+            var COMPOSITION_SAUCE2 = "SAUCE2";
             var COMPOSITION_BOISSON = "BOISSON";
             var COMPOSITION_CRUDITE = "CRUDITE";
             var COMPOSITION_SUPPLEMENT = "SUPPLEMENT";
@@ -239,7 +256,7 @@
                 var selectedSupplement = -1;
 
 
-                if( in_array( COMPOSITION_SUPPLEMENT ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_SUPPLEMENT) >= 0  ) {
                     var selectedSupplementCp = [];
                     $('#SupplementBox input:checked').each(function () {
                         selectedSupplementCp.push($(this).attr('value'));
@@ -248,7 +265,7 @@
                         selectedSupplement = selectedSupplementCp;
                 }
 
-                if( in_array( COMPOSITION_CRUDITE ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_CRUDITE) >= 0  ) {
                     if ($("#BurgerWoopInfoSupInput").val().length != 0)
                         selectedCrudites = $("#BurgerWoopInfoSupInput").val();
                 }
@@ -270,22 +287,22 @@
                 var selectedSupplement = -1;
 
 
-                if( in_array( COMPOSITION_FRITE ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_FRITE) >= 0  ) {
                     var frite = $(this).parent().find("#ChoixFrite").val();
                 }
 
-                if( in_array( COMPOSITION_SAUCE ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_SAUCE) >= 0  ) {
                     var sauce1 = $(this).parent().find("#ChoixSauce1").val();
                 }
 
-                if( in_array( COMPOSITION_SAUCE2 ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_SAUCE2) >= 0  ) {
                     var sauce2 = $(this).parent().find("#ChoixSauce2").val();
                 }
 
-                if( in_array( COMPOSITION_BOISSON ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_BOISSON) >= 0  ) {
                     var boisson = $(this).parent().find("#ChoixBoisson").val();
                 }
-                if( in_array( COMPOSITION_SUPPLEMENT ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_SUPPLEMENT) >= 0  ) {
                     var selectedSupplementCp = [];
                     $('#SupplementBox input:checked').each(function () {
                         selectedSupplementCp.push($(this).attr('value'));
@@ -294,7 +311,7 @@
                         selectedSupplement = selectedSupplementCp;
                 }
 
-                if( in_array( COMPOSITION_CRUDITE ,composition_array) ) {
+                if(  composition_array.indexOf(COMPOSITION_CRUDITE) >= 0  ) {
                     if ($("#BurgerWoopInfoSupInput").val().length != 0)
                         selectedCrudites = $("#BurgerWoopInfoSupInput").val();
                 }

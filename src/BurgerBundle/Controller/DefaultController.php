@@ -118,7 +118,8 @@ class DefaultController extends Controller {
         if(!empty($typeObject))
             $typeObject = unserialize($typeObject->getComposition());
 
-        $boissons = $repositoryProduit->findByType("Boisson");
+
+        $boissons = $repositoryProduit->findByType($repositoryTypeProduit->findByNom("Boisson"));
         $sauces = $repositorySauce->findAll();
         $crudites = $repositoryCrudite->findAll();
         $frites = $repositoryTypeFrite->findAll();
@@ -692,7 +693,7 @@ class DefaultController extends Controller {
             $repositoryProduit = $em->getRepository("BurgerBundle:Produit");
             $produit = $repositoryProduit->find($produitId);
             // on  fixe le prix on fonction de l'achat d'un menu ou du burger seulement
-            if (($produit->getType() == "Burger" || $produit->getType() == "Woop" || $produit->getType() == "Sandwich") && intval($options[0]) == -1)
+            if ( !empty($produit->getType()->getComposition()) && intval($options[0]) == -1 &&  intval($options[3]) == -1 )
                 $this->ajouterArticle($produit->getId(), 1, $produit->getSeul(), $options, $produitType, $request);
             else
                 $this->ajouterArticle($produit->getId(), 1, $produit->getPrix(), $options, $produitType, $request);

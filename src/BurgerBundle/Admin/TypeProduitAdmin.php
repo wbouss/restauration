@@ -53,6 +53,7 @@ class TypeProduitAdmin extends AbstractAdmin
         $choices[TypeProduitAdminController::$supplement] = TypeProduitAdminController::$supplement;
         $choices[TypeProduitAdminController::$sauce] = TypeProduitAdminController::$sauce;
         $choices[TypeProduitAdminController::$sauce2] = TypeProduitAdminController::$sauce2;
+        $choices[TypeProduitAdminController::$boisson] = TypeProduitAdminController::$boisson;
         $formMapper
             ->add('nom')
             ->add('composition', "choice" , array( "multiple" => true , "choices" => array( $choices)))

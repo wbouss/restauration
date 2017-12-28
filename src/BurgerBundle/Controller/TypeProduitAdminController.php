@@ -16,9 +16,10 @@ class TypeProduitAdminController extends CRUDController
 
     public static $frite = "FRITE";
     public static $supplement = "SUPPLEMENT";
-    public static $crudite = "SUPPLEMENT";
+    public static $crudite = "CRUDITE";
     public static $sauce = "SAUCE";
     public static $sauce2 = "SAUCE2";
+    public static $boisson = "BOISSON";
 
 
 

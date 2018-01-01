@@ -9,7 +9,11 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr_FR
-    burgerBundle.livraison: 'magasin'
+    livraison: 'magasin'
+    mail_resp: 'wbouss@gmail.com'
+    tarifSup: 0.5
+    livraison.magasin_enabled: true
+
     
 framework:
     #esi:             ~

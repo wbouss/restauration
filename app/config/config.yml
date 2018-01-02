@@ -9,12 +9,17 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr_FR
+    name_website: 'Restauration rapide'
     livraison: 'magasin'
     mail_resp: 'wbouss@gmail.com'
     tarifSup: 0.5
     livraison.magasin_enabled: true
+    livraison.min_total: 15
+    stripe.private_key: sk_test_7Pj74JxtAJF4cQfSSeostGWA
+    stripe.public_key: pk_test_QDRpNiZyOSQY3vPT4UKN0A8Y
 
-    
+
+
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }

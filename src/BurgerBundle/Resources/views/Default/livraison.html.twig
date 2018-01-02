@@ -125,30 +125,30 @@
                             <a href="#" class="list-group-item"
                                onClick="location.href = '{{ path('burger_livraison', { "type": "magasin" }) }}'">
                                 {% endif %}
-                                <h4 class="list-group-item-heading">En magasin St Jacques-Gratuit</h4>
+                                <h4 class="list-group-item-heading">En magasin-Gratuit</h4>
                                 <p class="list-group-item-text">Sur place ou à emporter</p>
                             </a>
-                                {% if type == "domicile" %}
-                                <a href="#" class="list-group-item active"
-                                   onClick="location.href = '{{ path('burger_livraison', { "type": "domicile" }) }}'">
-                                    <h4 class="list-group-item-heading">Livraison magasin St Jacques à domicile-Gratuit
-                                        à partir de 15 euros</h4>
+                            {% if type == "domicile" %}
+                            <a href="#" class="list-group-item active"
+                               onClick="location.href = '{{ path('burger_livraison', { "type": "domicile" }) }}'">
+                                <h4 class="list-group-item-heading">Livraison à domicile-Gratuit
+                                    à partir de 15 euros</h4>
+                                <p class="list-group-item-text">
+                                    Adresse: {{ app.user.adresse }} {{ app.user.ville }} {{ app.user.codepostale }}</p>
+                            </a>
+                            {% else %}
+                            {% if montantTotal >= livraisonMin %}
+                            <a href="#" class="list-group-item"
+                               onClick="location.href = '{{ path('burger_livraison', { "type": "domicile" }) }}'">
+                                {% else %}
+                                <a class="list-group-item">
+                                    {% endif %}
+                                    <h4 class="list-group-item-heading">Livraison  à
+                                        domicile-Gratuit à partir de 15 euros</h4>
                                     <p class="list-group-item-text">
                                         Adresse: {{ app.user.adresse }} {{ app.user.ville }} {{ app.user.codepostale }}</p>
                                 </a>
-                                {% else %}
-                                {% if montantTotal >= 15 %}
-                                <a href="#" class="list-group-item"
-                                   onClick="location.href = '{{ path('burger_livraison', { "type": "domicile" }) }}'">
-                                    {% else %}
-                                    <a class="list-group-item">
-                                        {% endif %}
-                                        <h4 class="list-group-item-heading">Livraison magasin St Jacques à
-                                            domicile-Gratuit à partir de 15 euros</h4>
-                                        <p class="list-group-item-text">
-                                            Adresse: {{ app.user.adresse }} {{ app.user.ville }} {{ app.user.codepostale }}</p>
-                                    </a>
-                                    {% endif %}
+                                {% endif %}
                     </div>
                 </div>
             </div>

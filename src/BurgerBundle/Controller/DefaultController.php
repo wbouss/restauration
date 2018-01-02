@@ -16,8 +16,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class DefaultController extends Controller {
 
     private $livraison = "magasin";
-    public static $MailResp = "bibile254@gmail.com";
-    public static $MailResp2 = "bibile142@gmail.com";
+    public static $MailResp = "wbouss@gmail.com";
+    public static $MailWebSite = "noreply-burger@restauration.fr";
     public static $tarifSup = 0.5;
 
     /**
@@ -38,8 +38,8 @@ class DefaultController extends Controller {
             $prenom = addslashes($_POST['prenom']);
 
 
-            $to = 'bibile142@gmail.com';
-            $subject = 'Message de Bibi-Burger.fr';
+            $to = DefaultController::$MailResp;
+            $subject = 'Message de '.DefaultController::$MailWebSite;
             $message = 'As Salam Alaykoum !
 		Voici un message envoyé par :' . $nom . '' . $prenom . '.
 		Téléphone :' . $tel . '. 
@@ -187,11 +187,9 @@ class DefaultController extends Controller {
      */
     public function commanderAction(Request $request, $livraison = "magasin") {
         $total = $this->MontantGlobal($request);
-        if ($livraison == "domicile")
-            $livraison = "Livraison par le magasin";
-        else if ($livraison == "domicile2")
-            $livraison = "domicile2";
-        return $this->render('BurgerBundle:Default:commander.html.twig', (array("typeLivraison" => $livraison, "total" => $total)));
+        $public_key = $this->container->getParameter('stripe.public_key');
+
+        return $this->render('BurgerBundle:Default:commander.html.twig', (array( "public_key" => $public_key , "typeLivraison" => $livraison, "total" => $total)));
     }
 
     /**
@@ -204,53 +202,17 @@ class DefaultController extends Controller {
         $montantTotal = $this->MontantGlobal($request);
         if ($type != "" && $type == "magasin")
             $livraison = "magasin";
-        else if ($type != "" && $type == "magasin2")
-            $livraison = "magasin2";
         else if ($type != "" && $type == "domicile")
             $livraison = "domicile";
-        else if ($type != "" && $type == "domicile2")
-            $livraison = "domicile2";
         else
             $livraison = "magasin";
 
         $mag_enabled = $this->container->getParameter('livraison.magasin_enabled');
+        $livraison_min = $this->container->getParameter('livraison.min_total');
 
-        return $this->render('BurgerBundle:Default:livraison.html.twig', array("MagasinEnabled" => $mag_enabled , "montantTotal" => $montantTotal, "nbArticlePanier" => $nb, "type" => $livraison));
+        return $this->render('BurgerBundle:Default:livraison.html.twig', array("livraisonMin" => $livraison_min, "MagasinEnabled" => $mag_enabled , "montantTotal" => $montantTotal, "nbArticlePanier" => $nb, "type" => $livraison));
     }
 
-//
-//    /**
-//     * @Route("/payment/{id}", name="paiement")
-//     */
-//    public function afficherPaiementStripeAction(Request $request) {
-//        $montantTotal = $this->MontantGlobal($request);
-//        return $this->render('BurgerBundle:Default:paiement.html.twig', array("montantTotal" => $montantTotal * 100));
-//    }
-//    
-//    /**
-//     * Matches 
-//     *
-//     * @Route("/payer", name="burger_fairepayer")
-//     */
-//    public function fairePayerStripeAction(Request $request) {
-//        $montantTotal = $this->MontantGlobal($request);
-//
-//        // See your keys here: https://dashboard.stripe.com/account/apikeys
-//        \Stripe\Stripe::setApiKey("sk_test_7Pj74JxtAJF4cQfSSeostGWA");
-//
-//        // Token is created using Stripe.js or Checkout!
-//        // Get the payment token submitted by the form:
-//        $token = $request->get('stripeToken');
-//
-//        // Charge the user's card:
-//        $charge = \Stripe\Charge::create(array(
-//                    "amount" => $montantTotal * 100,
-//                    "currency" => "eur",
-//                    "description" => "Commande",
-//                    "source" => $token,
-//        ));
-//        return $this->render('BurgerBundle:Default:paiementOk.html.twig');
-//    }
 
     /**
      * Matches 
@@ -277,17 +239,36 @@ class DefaultController extends Controller {
      */
     public function paiementAction(Request $request, $livraison = "magasin") {
 
+        $name_website = $this->container->getParameter('name_website');
+        $private_key = $this->container->getParameter('stripe.private_key');
+        $public_key = $this->container->getParameter('stripe.public_key');
 
+        $em = $this->getDoctrine()->getManager();
+        $total = $this->MontantGlobal($request);
+
+        // on vérifie s'il n'y a pas d'erreur
+        // On test si on peut passer des commandes
+        $repositoryParametre = $em->getRepository("BurgerBundle:Parametre");
+        $autorisation = $repositoryParametre->findOneByNom("Activation des commandes");
+        if (empty($autorisation) || $autorisation->getValeur() != "En marche") {
+            $message = "Les commandes sont suspendu, veuillez réessayer plus tard";
+            return $this->render('BurgerBundle:Default:commander.html.twig', (array( "public_key" => $public_key , "message" => $message, "typeLivraison" => $livraison, "total" => $total)));
+        }
+
+        // On test si la commande est conforme aux règles
+        if ($livraison == "domicile" && $total < 15) {
+            $message = "Les commandes en dessous de 15 euros ne peuvent être à domicile";
+            return $this->render('BurgerBundle:Default:commander.html.twig', (array( "public_key" => $public_key  ,"message" => $message, "typeLivraison" => $livraison, "total" => $total)));
+        }
 
         // See your keys here: https://dashboard.stripe.com/account/apikeys
-        \Stripe\Stripe::setApiKey("sk_live_irspTYuqrdfltp2OZDxhX6UK");
+        \Stripe\Stripe::setApiKey($private_key);
 
         // Token is created using Stripe.js or Checkout!
         // Get the payment token submitted by the form:
         $token = $request->get('stripeToken');
 
-        $total = $this->MontantGlobal($request);
-        
+
         if (empty($token))
         {
             return $this->render('BurgerBundle:Default:panier.html.twig', array("total" => $total));
@@ -304,22 +285,7 @@ class DefaultController extends Controller {
         ));
 
 
-        $em = $this->getDoctrine()->getManager();
 
-        // on vérifie s'il n'y a pas d'erreur
-        // On test si on peut passer des commandes
-        $repositoryParametre = $em->getRepository("BurgerBundle:Parametre");
-        $autorisation = $repositoryParametre->findOneByNom("Activation des commandes");
-        if (empty($autorisation) || $autorisation->getValeur() != "En marche") {
-            $message = "Les commandes sont suspendu, veuillez réessayer plus tard";
-            return $this->render('BurgerBundle:Default:commander.html.twig', (array("message" => $message, "typeLivraison" => $livraison, "total" => $total)));
-        }
-
-        // On test si la commande est conforme aux règles
-        if ($livraison == "domicile" && $total < 15) {
-            $message = "Les commandes en dessous de 15 euros ne peuvent être à domicile";
-            return $this->render('BurgerBundle:Default:commander.html.twig', (array("message" => $message, "typeLivraison" => $livraison, "total" => $total)));
-        }
 
 
 
@@ -342,18 +308,13 @@ class DefaultController extends Controller {
         $commande->setAmount($total);
         $commande->setTypepaiement("carte bancaire");
         if ($livraison == "domicile") {
-            $commande->setLivraison("Livraison par  magasin Rennes St Jacques");
+            $commande->setLivraison("domicile");
+            $mailtosend = DefaultController::$MailResp;}
+        else if ($livraison == "magasin") {
+            $commande->setLivraison("magasin");
             $mailtosend = DefaultController::$MailResp;
-        } else if ($livraison == "domicile2") {
-            $commande->setLivraison("Livraison par  magasin Rennes Fougères");
-            $mailtosend = DefaultController::$MailResp2;
-        } else if ($livraison == "magasin") {
-            $commande->setLivraison("A emporter du magasin Rennes St Jacques");
-            $mailtosend = DefaultController::$MailResp;
-        } else if ($livraison == "magasin2") {
-            $commande->setLivraison("A emporter du magasin Rennes Fougères");
-            $mailtosend = DefaultController::$MailResp2;
-        } else {
+        }
+         else {
             $commande->setLivraison($livraison); // cas non existant
         }
 
@@ -380,135 +341,10 @@ class DefaultController extends Controller {
          *  mail au fournisseur
          */
         $titre = "Nouvelle commande";
-        $from = "noreply-burger@bibiburger.fr";
+        $from =  DefaultController::$MailWebSite;
 
 
-        $body = $this->get("templating")->render('BurgerBundle:Mail:nouvelleCommandeResponsable.html.twig', array('commande' => $commande, "lignes" => $lignes));
-
-        $message = \Swift_Message::newInstance()
-                ->setSubject($titre)
-                ->setFrom($from)
-                ->setTo($mailtosend)
-                ->setBody($body)
-                ->setContentType('text/html');
-        $this->get('mailer')->send($message);
-
-        /*
-         *  mail au client
-         */
-        $titre = "Votre commande Bibi-Burger.fr";
-        $from = "noreply-burger@bibiburger.fr";
-
-
-        $body = $this->get("templating")->render('BurgerBundle:Mail:nouvelleCommandeClient.html.twig', array('commande' => $commande, "lignes" => $lignes));
-
-        $message = \Swift_Message::newInstance()
-                ->setSubject($titre)
-                ->setFrom($from)
-                ->setTo($this->getUser()->getEmail())
-                ->setBody($body)
-                ->setContentType('text/html');
-        $this->get('mailer')->send($message);
-
-        return $this->render('BurgerBundle:Default:paiementOk.html.twig');
-    }
-
-    /**
-     * Matches
-     *
-     * @Route("/paiementplace/{livraison}", name="burger_paiementplace")
-     */
-    public function paiementPlaceAction(Request $request, $livraison = "magasin") {
-
-
-        $total = $this->MontantGlobal($request);
-
-
-
-        $em = $this->getDoctrine()->getManager();
-
-        // on vérifie s'il n'y a pas d'erreur
-        // On test si on peut passer des commandes
-        $repositoryParametre = $em->getRepository("BurgerBundle:Parametre");
-        $autorisation = $repositoryParametre->findOneByNom("Activation des commandes");
-        if (empty($autorisation) || $autorisation->getValeur() != "En marche") {
-            $message = "Les commandes sont suspendu, veuillez réessayer plus tard";
-            return $this->render('BurgerBundle:Default:commander.html.twig', (array("message" => $message, "typeLivraison" => $livraison, "total" => $total)));
-        }
-
-        // On test si la commande est conforme aux règles
-        if ($livraison == "domicile" && $total < 15) {
-            $message = "Les commandes en dessous de 15 euros ne peuvent être à domicile";
-            return $this->render('BurgerBundle:Default:commander.html.twig', (array("message" => $message, "typeLivraison" => $livraison, "total" => $total)));
-        }
-
-        if (($this->getUser() == null ) || $total <= 0 )
-        {
-            return $this->render('BurgerBundle:Default:panier.html.twig', array("total" => $total));
-        }
-
-        $repositoryProduit = $em->getRepository("BurgerBundle:Produit");
-        $panier = $request->getSession()->get("panier");
-        $translationP = $this->panierD($request);
-
-        // creation de la commande
-        $commande = new \BurgerBundle\Entity\Commande();
-        $commande->setAdresse($this->getUser()->getAdresse());
-        $commande->setCodepostale($this->getUser()->getCodePostale());
-        $commande->setVille($this->getUser()->getVille());
-        $commande->setInformationComplementairesAdresse($this->getUser()->getInformationComplementairesAdresse());
-        $commande->setCodeImmeuble($this->getUser()->getCodeImmeuble());
-        $commande->setInterphone($this->getUser()->getInterphone());
-        $commande->setNom($this->getUser()->getLastName());
-        $commande->setTelephone($this->getUser()->getTelephone());
-        $commande->setEtat("Emise");
-        $commande->setDate(new \DateTime());
-        $commande->setAmount($total);
-        $commande->setTypepaiement("sur place");
-
-           if ($livraison == "domicile") {
-            $commande->setLivraison("Livraison par  magasin Rennes St Jacques");
-            $mailtosend = DefaultController::$MailResp;
-        } else if ($livraison == "domicile2") {
-            $commande->setLivraison("Livraison par  magasin Rennes Fougères");
-            $mailtosend = DefaultController::$MailResp2;
-        } else if ($livraison == "magasin") {
-            $commande->setLivraison("A emporter du magasin Rennes St Jacques");
-            $mailtosend = DefaultController::$MailResp;
-        } else if ($livraison == "magasin2") {
-            $commande->setLivraison("A emporter du magasin Rennes Fougères");
-            $mailtosend = DefaultController::$MailResp2;
-        } else {
-            $commande->setLivraison($livraison); // cas non existant
-        }
-
-        $em->persist($commande);
-
-        $lignes = array();
-        // creation des ligne de commande
-        for ($i = 0; $i < count($panier["idProduit"]); $i++) {
-            $ligne = new \BurgerBundle\Entity\LigneCommande();
-            $p = $repositoryProduit->find($panier["idProduit"][$i][0]);
-            $ligne->setProduit($p->getIntitule());
-            $ligne->setQuantite($panier["qteProduit"][$i]);
-            $ligne->setPrix($panier["prixProduit"][$i]);
-            $ligne->setCommande($commande);
-            $ligne->setOptions(json_encode($translationP[$i]["optionsProduit"]));
-            $em->persist($ligne);
-            $lignes[] = $ligne;
-        }
-
-        $em->flush();
-        $this->viderPanier($request);
-
-        /*
-         *  mail au fournisseur
-         */
-        $titre = "Nouvelle commande";
-        $from = "noreply-burger@bibiburger.fr";
-
-
-        $body = $this->get("templating")->render('BurgerBundle:Mail:nouvelleCommandeResponsable.html.twig', array('commande' => $commande, "lignes" => $lignes));
+        $body = $this->get("templating")->render('BurgerBundle:Mail:nouvelleCommandeResponsable.html.twig', array('commande' => $commande, "lignes" => $lignes , "websiteName" => $name_website));
 
         $message = \Swift_Message::newInstance()
                 ->setSubject($titre)
@@ -521,11 +357,11 @@ class DefaultController extends Controller {
         /*
          *  mail au client
          */
-        $titre = "Votre commande Bibi-Burger.fr";
-        $from = "noreply-burger@bibiburger.fr";
+        $titre = "Votre commande ".$name_website;
+        $from =  DefaultController::$MailWebSite;
 
 
-        $body = $this->get("templating")->render('BurgerBundle:Mail:nouvelleCommandeClient.html.twig', array('commande' => $commande, "lignes" => $lignes));
+        $body = $this->get("templating")->render('BurgerBundle:Mail:nouvelleCommandeClient.html.twig', array('commande' => $commande, "lignes" => $lignes, "websiteName" => $name_website));
 
         $message = \Swift_Message::newInstance()
                 ->setSubject($titre)
@@ -537,6 +373,8 @@ class DefaultController extends Controller {
 
         return $this->render('BurgerBundle:Default:paiementOk.html.twig');
     }
+
+
     /**
      * Matches
      *
@@ -805,37 +643,6 @@ class DefaultController extends Controller {
             return new Response("nok");
     }
 
-//    /**
-//     * Matches 
-//     *
-//     * @Route("/supprimerArticlePanier/{produitId}",
-//     * options = { "expose" = true },
-//     *  name="burger_supprimerpanier")
-//     */
-//    function supprimerArticlePanierAction(Request $request) {
-//        $produitId = $request->get("produitId");
-//        if (!empty($produitId)) {
-//            $this->supprimerArticle($produitId, $request);
-//        }
-//        $total = $this->MontantGlobal($request);
-//        return $this->render('BurgerBundle:Default:panier.html.twig', array("total" => $total));
-//    }
-//
-//    /**
-//     * Matches 
-//     *
-//     * @Route("/reduireArticlePanier/{produitId}",
-//     * options = { "expose" = true },
-//     *  name="burger_reduirepanier")
-//     */
-//    function reduireArticlePanierAction(Request $request) {
-//        $produitId = $request->get("produitId");
-//        if (!empty($produitId)) {
-//            $this->reduireArticle($produitId, $request);
-//        }
-//        $total = $this->MontantGlobal($request);
-//        return $this->render('BurgerBundle:Default:panier.html.twig', array("total" => $total));
-//    }
 
     function ajouterArticle($idProduit, $qteProduit, $prixProduit, $options, $typeProduit, $request) {
         $session = $request->getSession();
@@ -901,74 +708,6 @@ class DefaultController extends Controller {
             return -2;
     }
 
-//
-//    function reduireArticle($idProduit, $request) {
-//        $session = $request->getSession();
-//
-//        //Si le panier existe
-//        if ($this->creationPanier($request) && !$this->isVerrouille($request)) {
-//            $p = $session->get("panier");
-//            //Si le produit existe déjà on ajoute seulement la quantité
-//            $positionProduit = array_search($idProduit, $p["idProduit"]);
-//
-//            if ($positionProduit !== false) {
-//                if ($p['qteProduit'][$positionProduit] == 1)
-//                    $this->supprimerArticle($idProduit, $request);
-//                else if ($p['qteProduit'][$positionProduit] > 1) {
-//                    $p['qteProduit'][$positionProduit] -= 1;
-//                    $session->set("panier", $p);
-//                } else
-//                    return false;
-//            } else {
-//                //Sinon le produit n'existe pas, on ne fait rien
-//                return false;
-//            }
-//            return true;
-//        } else
-//            return false;
-//    }
-//    function supprimerArticle($idProduit, $request) {
-//
-//        //Si le panier existe
-//        if ($this->creationPanier($request) && !$this->isVerrouille($request)) {
-//            //Nous allons passer par un panier temporaire
-//
-//            $tmp = array();
-//            $tmp['idProduit'] = array();
-//            $tmp['qteProduit'] = array();
-//            $tmp['prixProduit'] = array();
-//            $panier = $request->getSession()->get("panier");
-//            $tmp['verrou'] = $panier["verrou"];
-//            for ($i = 0; $i < count($panier['idProduit']); $i++) {
-//                if ($panier['idProduit'][$i] != $idProduit) {
-//                    $tmp['idProduit'][] = $panier['idProduit'][$i];
-//                    $tmp['qteProduit'][] = $panier['qteProduit'][$i];
-//                    $tmp['prixProduit'][] = $panier['prixProduit'][$i];
-//                }
-//            }
-//            //On remplace le panier en session par notre panier temporaire à jour
-//            $request->getSession()->set("panier", $tmp);
-//            return true;
-//        } else
-//            return false;
-//    }
-//    function modifierQTeArticle($libelleProduit, $qteProduit) {
-//        //Si le panier éxiste
-//        if (creationPanier() && !isVerrouille()) {
-//            //Si la quantité est positive on modifie sinon on supprime l'article
-//            if ($qteProduit > 0) {
-//                //Recharche du produit dans le panier
-//                $positionProduit = array_search($libelleProduit, $_SESSION['panier']['libelleProduit']);
-//
-//                if ($positionProduit !== false) {
-//                    $_SESSION['panier']['qteProduit'][$positionProduit] = $qteProduit;
-//                }
-//            } else
-//                supprimerArticle($libelleProduit);
-//        } else
-//            echo "Un problème est survenu veuillez contacter l'administrateur du site.";
-//    }
-
     function MontantGlobal($request) {
         $panier = $request->getSession()->get("panier");
         $total = 0;
@@ -1018,114 +757,85 @@ class DefaultController extends Controller {
             $produit = $repositoryProduit->find($session["idProduit"][$i][0]);
             $format["libelleProduit"] = $produit->getIntitule();
             $format["prixProduit"] = $produit->getPrix();
-            $format["imageProduit"] = $produit->getImage()->getPath() . $produit->getImage()->getName() . "." . $produit->getImage()->getExtension();
+            $format["imageProduit"] =  $produit->getImage()->getName() . "." . $produit->getImage()->getExtension();
             $format["qteProduit"] = $session["qteProduit"][$i];
             $format["prixProduit"] = $session["prixProduit"][$i];
             $format["descriptionProduit"] = $produit->getDescription();
 
             $optionsTranslation = Array();
-            if (($produit->getType() == "Burger" || $produit->getType() == "Woop") && intval($session["idProduit"][$i][1][0]) == -1) {
+            $composition_type = $produit->getType()->getComposition();
+
+
+            if(empty($composition_type)){
                 $optionsTranslation[] = -1;
                 $optionsTranslation [] = -1;
                 $optionsTranslation[] = -1;
                 $optionsTranslation[] = -1;
-                $supplementTranslation = Array();
-                if ($session["idProduit"][$i][1][4] != -1) {
-                    foreach ($session["idProduit"][$i][1][4] as $s) {
-                        $supplementTranslation[] = $repositorySupplement->find(intval($s))->getNom();
-                    }
-                } else
-                    $supplementTranslation = -1;
-                $optionsTranslation[] = $supplementTranslation;
-                $optionsTranslation[] = $session["idProduit"][$i][1][5];
-            }
-            else if (($produit->getType() == "Sandwich") && intval($session["idProduit"][$i][1][0]) == -1) {
                 $optionsTranslation[] = -1;
-                $optionsTranslation [] = -1;
-                $optionsTranslation[] = -1;
-                $optionsTranslation[] = -1;
-                $supplementTranslation = Array();
-                $cruditeTranslation = Array();
-                if ($session["idProduit"][$i][1][4] != -1) {
-                    foreach ($session["idProduit"][$i][1][4] as $s) {
-                        $supplementTranslation[] = $repositorySupplement->find(intval($s))->getNom();
-                    }
-                } else
-                    $supplementTranslation = -1;
-                if ($session["idProduit"][$i][1][5] != -1) {
-                    foreach ($session["idProduit"][$i][1][5] as $c) {
-                        $cruditeTranslation[] = $repositoryCrudite->find(intval($c))->getNom();
-                    }
-                } else {
-                    $cruditeTranslation = -1;
-                }
-                $optionsTranslation[] = $supplementTranslation;
-                $optionsTranslation[] = $cruditeTranslation;
-            } else if ($produit->getType() == "Burger" || $produit->getType() == "Woop") {
-
-                $friteTranslation = $repositoryFrite->find(intval($session["idProduit"][$i][1][0]))->getNom();
-                $sauce1Translation = $repositorySauce->find(intval($session["idProduit"][$i][1][1]))->getNom();
-                $sauce2Translation = $repositorySauce->find(intval($session["idProduit"][$i][1][2]))->getNom();
-                $boissonTranslation = $repositoryProduit->find(intval($session["idProduit"][$i][1][3]))->getIntitule();
-                $supplementTranslation = Array();
-                if ($session["idProduit"][$i][1][4] != -1) {
-                    foreach ($session["idProduit"][$i][1][4] as $s) {
-                        $supplementTranslation[] = $repositorySupplement->find(intval($s))->getNom();
-                    }
-                } else
-                    $supplementTranslation = -1;
-                $optionsTranslation[] = $friteTranslation;
-                $optionsTranslation [] = $sauce1Translation;
-                $optionsTranslation[] = $sauce2Translation;
-                $optionsTranslation[] = $boissonTranslation;
-                $optionsTranslation[] = $supplementTranslation;
-                $optionsTranslation[] = $session["idProduit"][$i][1][5];
-            } else if ($produit->getType() == "Sandwich") {
-
-                $friteTranslation = $repositoryFrite->find(intval($session["idProduit"][$i][1][0]))->getNom();
-                $sauce1Translation = $repositorySauce->find(intval($session["idProduit"][$i][1][1]))->getNom();
-                $sauce2Translation = $repositorySauce->find(intval($session["idProduit"][$i][1][2]))->getNom();
-                $boissonTranslation = $repositoryProduit->find(intval($session["idProduit"][$i][1][3]))->getIntitule();
-                $supplementTranslation = Array();
-                $cruditeTranslation = Array();
-                if ($session["idProduit"][$i][1][4] != -1) {
-                    foreach ($session["idProduit"][$i][1][4] as $s) {
-                        $supplementTranslation[] = $repositorySupplement->find(intval($s))->getNom();
-                    }
-                } else
-                    $supplementTranslation = -1;
-                if ($session["idProduit"][$i][1][5] != -1) {
-                    foreach ($session["idProduit"][$i][1][5] as $c) {
-                        $cruditeTranslation[] = $repositoryCrudite->find(intval($c))->getNom();
-                    }
-                } else {
-                    $cruditeTranslation = -1;
-                }
-                $optionsTranslation[] = $friteTranslation;
-                $optionsTranslation [] = $sauce1Translation;
-                $optionsTranslation[] = $sauce2Translation;
-                $optionsTranslation[] = $boissonTranslation;
-                $optionsTranslation[] = $supplementTranslation;
-                $optionsTranslation[] = $cruditeTranslation;
-            } else if ($produit->getType() == "Tex mex") {
-
-                $sauce1Translation = $repositorySauce->find(intval($session["idProduit"][$i][1][1]))->getNom();
-                $supplementTranslation = Array();
-                if ($session["idProduit"][$i][1][4] != -1) {
-                    foreach ($session["idProduit"][$i][1][4] as $s) {
-                        $supplementTranslation[] = $repositorySupplement->find(intval($s))->getNom();
-                    }
-                } else
-                    $supplementTranslation = -1;
-                $optionsTranslation[] = -1;
-                $optionsTranslation [] = $sauce1Translation;
-                $optionsTranslation[] = -1;
-                $optionsTranslation[] = -1;
-                $optionsTranslation[] = $supplementTranslation;
                 $optionsTranslation[] = -1;
             }
+
+            if( intval($session["idProduit"][$i][1][0]) != -1)
+            {
+                $friteTranslation = $repositoryFrite->find(intval($session["idProduit"][$i][1][0]))->getNom();
+                $optionsTranslation[] = $friteTranslation;
+            }
+            else
+                $optionsTranslation[] = -1;
+
+            if( intval($session["idProduit"][$i][1][1]) != -1 )
+            {
+                $sauce1Translation = $repositorySauce->find(intval($session["idProduit"][$i][1][1]))->getNom();
+                $optionsTranslation[] = $sauce1Translation;
+            }
+            else
+                $optionsTranslation[] = -1;
+
+            if( intval($session["idProduit"][$i][1][2]) != -1)
+            {
+                $sauce2Translation = $repositorySauce->find(intval($session["idProduit"][$i][1][2]))->getNom();
+                $optionsTranslation[] = $sauce2Translation;
+            }
+            else
+                $optionsTranslation[] = -1;
+
+            if( intval($session["idProduit"][$i][1][3]) != -1)
+            {
+                $boissonTranslation = $repositoryProduit->find(intval($session["idProduit"][$i][1][3]))->getIntitule();
+                $optionsTranslation[] = $boissonTranslation;
+            }
+            else
+                $optionsTranslation[] = -1;
+
+            $supplementTranslation = Array();
+            if ($session["idProduit"][$i][1][4] != -1) {
+                foreach ($session["idProduit"][$i][1][4] as $s) {
+                    $supplementTranslation[] = $repositorySupplement->find(intval($s))->getNom();
+                }
+            } else
+                $supplementTranslation = -1;
+            $optionsTranslation[] = $supplementTranslation;
+
+            if ($session["idProduit"][$i][1][5] != -1) {
+                foreach ($session["idProduit"][$i][1][5] as $c) {
+                    $cruditeTranslation[] = $repositoryCrudite->find(intval($c))->getNom();
+                }
+            } else {
+                $cruditeTranslation = -1;
+            }
+
             $format["optionsProduit"] = $optionsTranslation;
-            $format["typeProduit"] = $produit->getType();
+
+            $typeObjectArray = [];
+            if( empty($produit->getType()->getComposition()))
+                $typeObjectArray = [];
+            else{
+                foreach ( unserialize($produit->getType()->getComposition()) as $e ){
+                    $typeObjectArray[] = $e;
+                }
+            }
+
+            $format["typeProduit"] =  $typeObjectArray;
 
             $retour[] = $format;
             $i++;

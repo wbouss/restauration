@@ -7,9 +7,6 @@
 
             Produit:  {{ val.produit }} , Quantité : {{ val.quantite }} , Prix payé: {{ val.prix|number_format(2, '.', ',') }}<br>
             {% if  admin.optionsBurger[i] is not empty %}
-                {% if admin.optionsBurger[i][0] == -1 and admin.optionsBurger[i][1] == -1 and admin.optionsBurger[i][2] == -1 and admin.optionsBurger[i][3] == -1 %}
-                    Sans boissons, ni frites <br>
-                {% endif %}
                 Options:<br> 
                 <ul>
                     {% if admin.optionsBurger[i][0] != -1 %}
@@ -36,17 +33,6 @@
                         </li>
                     {% endif %}
 
-                    {% if admin.optionsBurger[i][5] != -1  %}
-                        {% if admin.optionsBurger[i][5] is iterable  %}
-                            <li>Crudite:        
-                                {% for crud in admin.optionsBurger[i][5] %}
-                                    {{ crud }}/
-                                {% endfor %}
-                            </li>
-                        {% else %}
-                            <li>Information supplémentaires: {{ admin.optionsBurger[i][5]}} </li>
-                            {% endif %}
-                        {% endif %}
                 </ul>
 
             {%  endif %}

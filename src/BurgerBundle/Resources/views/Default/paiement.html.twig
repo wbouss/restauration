@@ -80,7 +80,7 @@
                     <form action="{{path("burger_fairepayer")}}" method="POST">
                         <script
                             src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                            data-key="pk_live_VCqQb4bsF3GranQfVCXXGhl8"
+                            data-key="{{ public_key }}"
                             data-amount="{{ montantTotal }}"
                             data-name="Paiement de la commande"
                             data-description="Widget"
